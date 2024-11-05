@@ -1,14 +1,8 @@
 resource "cloudstack_network" "cs_net" {
-  name             = "test-network"
-  cidr             = "10.10.1.0/22"
-  network_offering = "cloudstack_network_offering.cs_net_offering.id"
-  zone             = "${var.cloudstack_zone}"
-  project          = "WB-CloudConsole"
+  name             = "test2-network"
+  cidr             = var.instances.cidr_prefix
+  network_offering = "19823334-8f4a-465b-9de9-722477cd0ada"
+  zone             = var.cloudstack_zone
+  project          = var.cloudstack_project
 }
 
-resource "cloudstack_network_offering" "cs_net_offering" {
-    name = "cs-network-offering"
-    display_text = "Network Offering"
-    guest_ip_type = "Isolated"
-    traffic_type = "Guest"
-}

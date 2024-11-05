@@ -1,3 +1,12 @@
+variable "instances" {
+  type = object({
+    count          = 5
+    cidr_prefix    = 10.10.10.0/24
+    first_host_num = optional(number, 1)
+  })
+  nullable = false
+}
+
 variable "cloudstack_api_url" {
  type        = string
  description = "Api url"
@@ -30,5 +39,11 @@ variable "kubernetes_version" {
     error_message = "Invalid kubernetes version provided, allowed are 1.28.4, 1.27.8"
   }
   default = "1.28.4"
+}
+
+variable "cloudstack_project" {
+  type        = string
+  description = "Customer's project"
+  default     = "WB-CloudConsole"
 }
 

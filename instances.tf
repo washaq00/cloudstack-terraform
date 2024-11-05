@@ -1,26 +1,25 @@
 locals {
-  template = "Ubuntu 22.04 LTS"
+  template = "Ubuntu 24.04 LTS"
 }
-
-resource "cloudstack_disk" "cs_disk" {
-  name               = "cs-disk"
-  attach             = "true"
-  disk_offering      = "3ddd2c3b-b6b0-4e35-b48a-ab4b83507432"
-  size               = 10
-  virtual_machine_id = "cloudstack_instance.cs_node.id"
-  zone               = "${var.cloudstack_zone}"
-}
-
-#resource "cloudstack_disk_offering" "cs_custom_disk" {
-#    name = "cs-disk-offering"
-#    display_text = "Example Disk Offering"
-#    disk_size = 50
-#}
 
 resource "cloudstack_instance" "cs_node" {
-  name             = "cs-node"
-  service_offering = "6bfc02bf-9d73-4990-8abc-7da0fa5b850d"
-  network_id       = "cloudstack_network_offering.cs_net_offering.id"
+  count            = var.instances.count
+  name             = "cs-node${count.index}"
+  ip_address       = cidrhost(var.instances.cidr_prefix,var.instances.first_host_num + count.index,)
+  service_offering = "c656c2d8-885f-4d76-b610-fae8620c0e3f"
+  network_id       = cloudstack_network.cs_net.id
   template         = local.template
-  zone             = "${var.cloudstack_zone}"
+  zone             = var.cloudstack_zone
+  project          = var.cloudstack_project
+  expunge          = "true"
 }
+
+#resource "cloudstack_disk" "cs_disk" {
+#  name               = "cs-disk"
+#  attach             = "true"
+#  disk_offering      = "3ddd2c3b-b6b0-4e35-b48a-ab4b83507432"
+#  virtual_machine_id = cloudstack_instance.cs_node.id
+#  zone               = var.cloudstack_zone
+#  project            = var.cloudstack_project
+#}
+
