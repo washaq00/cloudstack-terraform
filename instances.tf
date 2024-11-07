@@ -12,6 +12,7 @@ resource "cloudstack_instance" "cs_node" {
   zone             = var.cloudstack_zone
   project          = var.cloudstack_project
   expunge          = "true"
+  keypair          = "fwaszak"
 }
 
 #resource "cloudstack_disk" "cs_disk" {

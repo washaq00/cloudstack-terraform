@@ -1,9 +1,14 @@
 variable "instances" {
   type = object({
-    count          = 5
-    cidr_prefix    = 10.10.10.0/24
-    first_host_num = optional(number, 1)
+    count          = number
+    cidr_prefix    = string
+    first_host_num = optional(number, 5)
   })
+  default = {
+    count          = 3
+    cidr_prefix    = "10.1.10.0/24"
+   
+  }
   nullable = false
 }
 
